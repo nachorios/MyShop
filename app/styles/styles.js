@@ -134,17 +134,7 @@ export default StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
   },
-  btnCloseSession: {
-    marginTop: 30,
-    borderRadius: 0,
-    backgroundColor: "#fff",
-    borderTopWidth: 1,
-    borderTopColor: "#e3e3e3",
-    borderBottomWidth: 1,
-    borderBottomColor: "#e3e3e3",
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
+
   btnCloseSessionText: {
     color: "#00a680",
   },
@@ -152,5 +142,13 @@ export default StyleSheet.create({
     marginTop: "80%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  titleStyle: { fontSize: 10 },
+  btnCartDelete: {
+    borderRadius: 10,
+  },
+  itemViewButton: {
+    flexDirection: "row",
+    marginLeft: -8,
   },
 });
