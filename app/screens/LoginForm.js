@@ -2,14 +2,14 @@ import React, { useState, useRef } from "react";
 import { StyleSheet, View } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import { isEmpty } from "lodash"; // si hay una variable vacia
-//import { useNavigation } from "@react-navigation/native";
 import * as firebase from "firebase";
 import { validateEmail } from "../utils/validations";
 import Loading from "../utils/Loading";
 import Toast from "react-native-easy-toast";
 import styles from "../styles/styles";
 
-export default function LoginForm() {
+export default function LoginForm(props) {
+  const { navigate, setShowModal } = props;
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState(defaultFormValue());
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,8 @@ export default function LoginForm() {
         .signInWithEmailAndPassword(formData.email, formData.password)
         .then(() => {
           setLoading(false);
-          toastRef.current.show("Has iniciado la sesion");
+          setShowModal(false);
+          navigate.navigate("Home");
         })
         .catch(() => {
           setLoading(false);

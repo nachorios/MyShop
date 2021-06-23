@@ -14,6 +14,10 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  viewText: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
   image: {
     width: 400,
@@ -35,12 +39,18 @@ export default StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
   },
+  formContainerRegister: {
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
   inputForm: {
     width: "100%",
     marginTop: 20,
   },
+  inputFormRegister: { marginTop: 5 },
   btnContainerRegister: {
-    marginTop: 20,
+    marginTop: 15,
+    marginLeft: 10,
     width: "95%",
   },
   btnRegister: {
@@ -81,5 +91,66 @@ export default StyleSheet.create({
     color: "#00a680",
     textTransform: "uppercase",
     marginTop: 10,
+  },
+  itemView: {
+    flexDirection: "row",
+  },
+  nameView: {
+    flex: 1,
+    fontSize: 20,
+  },
+  name: { fontSize: 20 },
+  price: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  total: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  btnContainer: {
+    position: "absolute",
+    bottom: 10,
+    right: 10,
+    shadowColor: "black",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+  },
+  btnContainerCart: {
+    margin: 20,
+  },
+  btnCart: {
+    borderRadius: 10,
+  },
+  btnContainerCartBuy: {
+    margin: 20,
+  },
+  btnCartBuy: {
+    backgroundColor: "#00a680",
+    borderRadius: 10,
+  },
+  loader: {
+    marginTop: 10,
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  btnCloseSession: {
+    marginTop: 30,
+    borderRadius: 0,
+    backgroundColor: "#fff",
+    borderTopWidth: 1,
+    borderTopColor: "#e3e3e3",
+    borderBottomWidth: 1,
+    borderBottomColor: "#e3e3e3",
+    paddingTop: 10,
+    paddingBottom: 10,
+  },
+  btnCloseSessionText: {
+    color: "#00a680",
+  },
+  viewConfirm: {
+    marginTop: "80%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

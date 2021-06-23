@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View } from "react-native";
+import { ScrollView } from "react-native";
 import { Input, Icon, Button } from "react-native-elements";
 import Loading from "../utils/Loading";
 import { validateEmail } from "../utils/validations";
@@ -12,19 +12,23 @@ import "firebase/firestore";
 const db = firebase.firestore(firebaseApp);
 
 export default function RegisterForm(props) {
-  const { setShowModal, setRegis } = props;
+  const { route } = props;
+  const { navigate, setRegis } = route.params;
   const [showPass, setShowPass] = useState(false);
   const [showPassRep, setShowPassRep] = useState(false);
   const [formData, setformData] = useState(defaultFormValue());
   const toastRef = useRef();
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState(false);
 
   const onSubmit = () => {
     if (
       isEmpty(formData.email) ||
       isEmpty(formData.pass) ||
-      isEmpty(formData.passRep)
+      isEmpty(formData.passRep) ||
+      isEmpty(formData.city) ||
+      isEmpty(formData.adress) ||
+      isEmpty(formData.name) ||
+      isEmpty(formData.lastName)
     ) {
       toastRef.current.show("Todos los campos son obligatorios");
     } else if (!validateEmail(formData.email)) {
@@ -41,14 +45,15 @@ export default function RegisterForm(props) {
         .auth()
         .createUserWithEmailAndPassword(formData.email, formData.pass)
         .then(() => {
+          db.collection("users").doc(firebase.auth().currentUser.uid).set({
+            name: formData.name,
+            lastName: formData.lastName,
+            adress: formData.adress,
+            city: formData.city,
+          });
           setLoading(false);
-
-          setShowModal(false);
           setRegis(true);
-        })
-        .catch(() => {
-          setLoading(false);
-          toastRef.current.show("El email ya esta en uso, pruebe con otro");
+          navigate.navigate("WelcomeScreen");
         });
     }
   };
@@ -57,25 +62,60 @@ export default function RegisterForm(props) {
     setformData({ ...formData, [type]: e.nativeEvent.text });
   };
 
-  const onCheck = () => {
-    return (
-      <Overlay
-        isVisible={visible}
-        onBackdropPress={toggleOverlay}
-        windowBackgroundColor="rgba(0,0,0,0.5)"
-        overlayBackgroundColor="transparent"
-        overlayStyle={styles.overlay}
-      >
-        <Text>Cuenta Registrada</Text>
-      </Overlay>
-    );
-  };
-
   return (
-    <View style={styles.formContainer}>
+    <ScrollView style={styles.formContainerRegister}>
+      <Input
+        placeholder="Nombre"
+        containerStyle={styles.inputFormRegister}
+        onChange={(e) => onChange(e, "name")}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="alpha-n-box-outline"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
+      <Input
+        placeholder="Apellido"
+        containerStyle={styles.inputFormRegister}
+        onChange={(e) => onChange(e, "lastName")}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="alpha-a-box-outline"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
+      <Input
+        placeholder="Direccion"
+        containerStyle={styles.inputFormRegister}
+        onChange={(e) => onChange(e, "adress")}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="home-account"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
+      <Input
+        placeholder="Ciudad"
+        containerStyle={styles.inputFormRegister}
+        onChange={(e) => onChange(e, "city")}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="city"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
+
       <Input
         placeholder="Correo electronico"
-        containerStyle={styles.inputForm}
+        containerStyle={styles.inputFormRegister}
         onChange={(e) => onChange(e, "email")}
         rightIcon={
           <Icon
@@ -87,7 +127,7 @@ export default function RegisterForm(props) {
       />
       <Input
         placeholder="Contraseña"
-        containerStyle={styles.inputForm}
+        containerStyle={styles.inputFormRegister}
         password={true}
         secureTextEntry={showPass ? false : true}
         onChange={(e) => onChange(e, "pass")}
@@ -102,7 +142,7 @@ export default function RegisterForm(props) {
       />
       <Input
         placeholder="Repetir contraseña"
-        containerStyle={styles.inputForm}
+        containerStyle={styles.inputFormRegister}
         password={true}
         secureTextEntry={showPassRep ? false : true}
         onChange={(e) => onChange(e, "passRep")}
@@ -128,7 +168,7 @@ export default function RegisterForm(props) {
         position="top"
         opacity={0.9}
       />
-    </View>
+    </ScrollView>
   );
 }
 
@@ -137,5 +177,9 @@ function defaultFormValue() {
     email: "",
     pass: "",
     passRep: "",
+    name: "",
+    lastName: "",
+    adress: "",
+    city: "",
   };
 }

@@ -1,28 +1,28 @@
 import React, { useState, useRef } from "react";
-import { View, Image, ImageBackground } from "react-native";
+import { View, Image, ImageBackground, Text } from "react-native";
 import { Button } from "react-native-elements";
-import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import Modal from "../utils/Modal";
 import styles from "../styles/styles";
 import Toast from "react-native-easy-toast";
+import { useNavigation } from "@react-navigation/native";
 
 export default function WelcomeScreen() {
   const [renderComponent, setRenderComponent] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [regis, setRegis] = useState(false);
   const toastRef = useRef();
+  const navigate = useNavigation();
 
   const login = () => {
-    setRenderComponent(<LoginForm />);
+    setRenderComponent(
+      <LoginForm navigate={navigate} setShowModal={setShowModal} />
+    );
     setShowModal(true);
   };
 
   const register = () => {
-    setRenderComponent(
-      <RegisterForm setShowModal={setShowModal} setRegis={setRegis} />
-    );
-    setShowModal(true);
+    navigate.navigate("RegisterForm", { navigate, setRegis });
   };
 
   if (regis == true) {
@@ -39,6 +39,9 @@ export default function WelcomeScreen() {
       >
         <View style={styles.viewImage}>
           <Image style={styles.icon} source={require("../assets/icono.png")} />
+        </View>
+        <View style={styles.viewText}>
+          <Text style={styles.name}>Compra lo que necesitas</Text>
         </View>
 
         <View style={styles.viewButton}>
